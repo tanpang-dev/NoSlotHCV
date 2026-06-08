@@ -332,6 +332,10 @@ const httpServer = http.createServer((req, res) => {
     const file = resolveWithSample(path.join(CONFIG_DIR, 'summon-cards.json'), path.join(CONFIG_DIR, 'summon-cards.sample.json'));
     return file ? sendFile(res, file, CONTENT_TYPES['.json']) : notFound(res);
   }
+  if (req.method === 'GET' && url === '/mushiking/config/medal-dirs.json') {
+    const file = resolveWithSample(path.join(CONFIG_DIR, 'medal-image-dirs.json'), path.join(CONFIG_DIR, 'medal-image-dirs.sample.json'));
+    return file ? sendFile(res, file, CONTENT_TYPES['.json']) : notFound(res);
+  }
 
   // Any other /mushiking/* GET is treated as a card image (user-supplied).
   if (req.method === 'GET' && url.startsWith('/mushiking/')) {

@@ -3,11 +3,13 @@
 
 # Real card database (user-supplied). Only cards.sample.json is committed.
 data/cards.json
+data/images
 data/images/
 
-# Real barcode rules (user-supplied). Only *.sample.json are committed.
+# Real barcode/medal rules (user-supplied). Only *.sample.json are committed.
 config/barcode-config.json
 config/summon-cards.json
+config/medal-image-dirs.json
 
 # Wi-Fi credentials / key-baker output
 *.cfg

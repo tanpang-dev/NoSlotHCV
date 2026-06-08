@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { selectCard } from './api.js';
 import { preferredBarcode, preferredBarcodeEntry } from './barcode.js';
+import { imageForMedal } from './medal.js';
 
 const BASE = '/mushiking/';
 
@@ -19,47 +20,6 @@ const MOVE_FILTERS = [
 ];
 
 const MOVE_LABELS = { gu: 'グー', choki: 'チョキ', paa: 'パー' };
-
-/* See MushikingBattle.jsx for the rationale. Kept in sync by hand for now. */
-const MEDAL_IMAGE_DIRS = {
-  NT: ['2003-nt-mushi', '2003-nt-waza', '2005-03-second'],
-  T: [
-    '2005-04-second-plus',
-    '2006-01-first',
-    '2006-02-second',
-    '2006-03-summer',
-    '2006-04-300m',
-    '2006-05-dynamic',
-  ],
-  CC: ['2007-04-forest-green'],
-  TC: ['2007-05-diamond-blue'],
-  '07-1': ['2007-01-first'],
-  '07-S': ['2007-06-summer-shining'],
-  '07-1+': ['2007-02-5th-vol1', '2007-03-5th-vol2'],
-  BT: ['2007-01-first'],
-  'BT-SP': ['2007-01-first'],
-  '03-06': [
-    '2005-03-second',
-    '2005-04-second-plus',
-    '2006-01-first',
-    '2006-02-second',
-    '2006-03-summer',
-    '2006-04-300m',
-    '2006-05-dynamic',
-  ],
-  SP: ['2007-01-first'],
-  DS: ['2007-02-5th-vol1', '2007-03-5th-vol2'],
-};
-
-function imageForMedal(card, medal) {
-  if (!card?.images?.length) return null;
-  const dirs = MEDAL_IMAGE_DIRS[medal] || [];
-  for (const dir of dirs) {
-    const hit = card.images.find((img) => img.startsWith(`${dir}/`));
-    if (hit) return hit;
-  }
-  return card.images[0];
-}
 
 function battleForBarcode(barcodeEntry, medal) {
   if (!barcodeEntry) return null;

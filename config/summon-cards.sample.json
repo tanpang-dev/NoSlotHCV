@@ -1,6 +1,9 @@
 {
-  "_comment": "FICTIONAL sample summon-card barcodes for battle mode. Real CODE39 values are NOT shipped. Copy to summon-cards.json and fill with your own (gitignored).",
-  "gu": "DD1SUMMONGU",
-  "choki": "DD1SUMMONCH",
-  "paa": "DD1SUMMONPA"
+  "_comment": "FICTIONAL sample. Battle-mode summon cards. Real CODE39 barcodes and the sprite image are user-supplied (gitignored).",
+  "sprite": "sample-set/summon-sprite.png",
+  "cards": [
+    { "type": "gu",    "name": "召喚カード(グー)",   "barcode": "DD1SUMMONGU", "width": 131, "backgroundPosition": "0 0" },
+    { "type": "choki", "name": "召喚カード(チョキ)", "barcode": "DD1SUMMONCH", "width": 130, "backgroundPosition": "-261px 0" },
+    { "type": "paa",   "name": "召喚カード(パー)",   "barcode": "DD1SUMMONPA", "width": 130, "backgroundPosition": "-131px 0" }
+  ]
 }

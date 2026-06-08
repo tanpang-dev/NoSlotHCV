@@ -2,9 +2,9 @@ import { useEffect, useMemo, useState } from 'react';
 import SearchableSelect from './SearchableSelect.jsx';
 import { selectCard } from './api.js';
 import { preferredBarcode, preferredBarcodeEntry } from './barcode.js';
+import { imageForSeries } from './medal.js';
 
 const BASE = '/mushiking/';
-const MISC_SPRITE = `${BASE}ds-misc/MushiKingDSCardsMisc.png`;
 
 const SLOTS = [
   { id: 'mushi',   label: 'メインムシ', source: 'mushi_cards',   color: '#5b8c4a' },
@@ -16,22 +16,26 @@ const SLOTS = [
 
 const MOVE_LABELS = { gu: 'グー', choki: 'チョキ', paa: 'パー' };
 
-/* Summon-card barcodes are user-supplied — real CODE39 values are NOT shipped.
- * They are injected at startup via configureSummon(); empty until then. */
-const SUMMON_CARDS = [
-  { type: 'gu',    label: 'グー',   name: '召喚カード(グー)',   barcode: '', width: 131, backgroundPosition: '0 0' },
-  { type: 'choki', label: 'チョキ', name: '召喚カード(チョキ)', barcode: '', width: 130, backgroundPosition: '-261px 0' },
-  { type: 'paa',   label: 'パー',   name: '召喚カード(パー)',   barcode: '', width: 130, backgroundPosition: '-131px 0' },
-];
+/* Summon cards (barcodes + sprite) are user-supplied data, loaded at startup
+ * via configureSummon(); empty until then so no real values are baked in. */
+let SUMMON_SPRITE = '';
+let SUMMON_CARDS = [];
 
 /**
- * Install summon-card barcodes (call once at startup).
- * @param {{gu?: string, choki?: string, paa?: string}} cfg
+ * Install summon cards + sprite (call once at startup).
+ * @param {{ sprite?: string, cards?: Array<{type: string, name: string, barcode: string, width: number, backgroundPosition: string}> }} cfg
  */
 export function configureSummon(cfg) {
-  for (const s of SUMMON_CARDS) {
-    if (cfg && typeof cfg[s.type] === 'string') s.barcode = cfg[s.type];
-  }
+  SUMMON_SPRITE = cfg?.sprite ? BASE + cfg.sprite : '';
+  const cards = Array.isArray(cfg?.cards) ? cfg.cards : [];
+  SUMMON_CARDS = cards.map((c) => ({
+    type: c.type,
+    label: MOVE_LABELS[c.type] || c.type,
+    name: c.name,
+    barcode: c.barcode || '',
+    width: c.width,
+    backgroundPosition: c.backgroundPosition,
+  }));
 }
 
 function toOptions(items) {
@@ -52,52 +56,6 @@ function itemsForSlot(sourceLookup, slot) {
 function firstImage(card) {
   if (!card?.images || !card.images.length) return null;
   return BASE + card.images[0];
-}
-
-/* NT (性格無し) images are scraped from mushiking.com's 2003 N column with
- * fallback to the A column (see work/cards/scrape_nt_a.py). Both mushi and
- * waza dirs are listed so the same series tag works for either card kind —
- * imageForSeries only returns the first hit, and the path prefixes are
- * disjoint per card kind so there's no collision. '2005-03-second' is kept
- * as a legacy fallback for cards that pre-date NT scraping. */
-const MEDAL_IMAGE_DIRS = {
-  NT: ['2003-nt-mushi', '2003-nt-waza', '2005-03-second'],
-  T: [
-    '2005-04-second-plus',
-    '2006-01-first',
-    '2006-02-second',
-    '2006-03-summer',
-    '2006-04-300m',
-    '2006-05-dynamic',
-  ],
-  CC: ['2007-04-forest-green'],
-  TC: ['2007-05-diamond-blue'],
-  '07-1': ['2007-01-first'],
-  '07-S': ['2007-06-summer-shining'],
-  '07-1+': ['2007-02-5th-vol1', '2007-03-5th-vol2'],
-  BT: ['2007-01-first'],
-  'BT-SP': ['2007-01-first'],
-  '03-06': [
-    '2005-03-second',
-    '2005-04-second-plus',
-    '2006-01-first',
-    '2006-02-second',
-    '2006-03-summer',
-    '2006-04-300m',
-    '2006-05-dynamic',
-  ],
-  SP: ['2007-01-first'],
-  DS: ['2007-02-5th-vol1', '2007-03-5th-vol2'],
-};
-
-function imageForSeries(card, series) {
-  if (!card?.images?.length) return null;
-  const dirs = MEDAL_IMAGE_DIRS[series] || [];
-  for (const dir of dirs) {
-    const hit = card.images.find((img) => img.startsWith(`${dir}/`));
-    if (hit) return hit;
-  }
-  return null;
 }
 
 function seriesOptions(card) {
@@ -334,7 +292,7 @@ export default function MushikingBattle({ db, compact = false }) {
                               style={{
                                 ...st.summonThumb,
                                 width: summon.width,
-                                backgroundImage: `url(${MISC_SPRITE})`,
+                                backgroundImage: SUMMON_SPRITE ? `url(${SUMMON_SPRITE})` : 'none',
                                 backgroundPosition: summon.backgroundPosition,
                               }}
                             />

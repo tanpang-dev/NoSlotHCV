@@ -4,10 +4,12 @@ import MushikingBattle, { configureSummon } from './MushikingBattle.jsx';
 import MushikingSettings from './MushikingSettings.jsx';
 import MushikingImport from './MushikingImport.jsx';
 import { configureBarcodes } from './barcode.js';
+import { configureMedalDirs } from './medal.js';
 
 const DATA_URL = '/mushiking/db/cards.json';
 const BARCODE_CONFIG_URL = '/mushiking/config/barcode.json';
 const SUMMON_CONFIG_URL = '/mushiking/config/summon.json';
+const MEDAL_CONFIG_URL = '/mushiking/config/medal-dirs.json';
 
 /* Optional config fetch — selection rules degrade gracefully if absent. */
 async function fetchOptionalJson(url) {
@@ -44,12 +46,14 @@ export default function MushikingPanel({ standalone = false, onBack }) {
     try {
       // Load barcode/summon selection rules first so the cards render with
       // the right barcodes from the very first paint.
-      const [barcodeCfg, summonCfg] = await Promise.all([
+      const [barcodeCfg, summonCfg, medalCfg] = await Promise.all([
         fetchOptionalJson(BARCODE_CONFIG_URL),
         fetchOptionalJson(SUMMON_CONFIG_URL),
+        fetchOptionalJson(MEDAL_CONFIG_URL),
       ]);
       if (barcodeCfg) configureBarcodes(barcodeCfg);
       if (summonCfg) configureSummon(summonCfg);
+      if (medalCfg) configureMedalDirs(medalCfg);
 
       const r = await fetch(DATA_URL);
       if (!r.ok) throw new Error(`HTTP ${r.status}`);

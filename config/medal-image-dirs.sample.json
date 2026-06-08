@@ -1,0 +1,5 @@
+{
+  "_comment": "FICTIONAL sample. Maps a collector-medal tag to the image folders to search for that version. Copy to medal-image-dirs.json and fill with your own folder names (gitignored).",
+  "S1": ["sample-set"],
+  "S2": ["sample-set"]
+}
