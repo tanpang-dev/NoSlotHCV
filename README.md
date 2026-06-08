@@ -32,7 +32,7 @@
 - [ ] [TWiLight Menu++](https://wiki.ds-homebrew.com/twilightmenu/) 導入済み（nds-bootstrap が動く状態）
 - [ ] **本体部品（B）= パッチ済み nds-bootstrap ＋ `MWIFI.BIN`**
       → [GPLv3 フォークの Release](https://github.com/tanpang-dev/nds-bootstrap-noslothcv/releases/latest) から入手
-- [ ] **ムシキング系 DS ソフトの ROM**（HCV-1000 対応タイトル。自分で吸い出したもの）
+- [ ] **対応ソフトの ROM**（HCV-1000 に対応した DS タイトル。自分で吸い出したもの）
 - [ ] SD カードへファイルを置く手段（カードリーダー or FTP）
 
 ---
@@ -58,11 +58,11 @@ npm start         # 毎回（サーバ起動 → ブラウザが http://localhos
 - 焼いた **`MWIFI.BIN`** → **SD カードのルート**
 - フォークの **パッチ済み nds-bootstrap 本体**（`nds-bootstrap-release.nds`）→ **`/_nds/`** に配置
   （TWiLight の `BOOTSTRAP_FILE` 設定に合わせる。不安なら release/nightly 両方に同じものを置く）
-- **ムシキング ROM** → `sd:/roms/nds/` 等、`nds-bootstrap.ini` の `NDS_PATH` が指す場所へ
+- **対応ソフトの ROM** → `sd:/roms/nds/` 等、`nds-bootstrap.ini` の `NDS_PATH` が指す場所へ
 
 ### 5. 遊ぶ
 1. 3DS と PC を**同じ AP** に接続
-2. **TWiLight Menu++ からムシキング ROM を起動**（自動で WiFi 接続 → PC を発見）
+2. **TWiLight Menu++ から対応ソフトを起動**（自動で WiFi 接続 → PC を発見）
 3. PC の **http://localhost:3001** でカードをクリック
 4. ゲームの**スキャン待ち画面**で、そのカードが読み込まれる
 
