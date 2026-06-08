@@ -1,0 +1,27 @@
+# NoSlotHCV — keep real card data, real barcodes, images, and Wi-Fi creds OUT of git.
+# Ship the *format* (schema + *.sample.json), never the data.
+
+# Real card database (user-supplied). Only cards.sample.json is committed.
+data/cards.json
+data/images/
+
+# Real barcode rules (user-supplied). Only *.sample.json are committed.
+config/barcode-config.json
+config/summon-cards.json
+
+# Wi-Fi credentials / key-baker output
+*.cfg
+secrets.*
+
+# Device blobs and backups — never commit (may contain a real baked PMK)
+*.BIN
+*.bin
+*.3ds-backup
+*.bak
+
+# Node / build
+node_modules/
+dist/
+
+# macOS
+.DS_Store

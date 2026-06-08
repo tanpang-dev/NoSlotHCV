@@ -1,0 +1,9 @@
+{
+  "_comment": "FICTIONAL sample. Barcode selection rules live here so that real barcode prefixes/labels are NOT baked into source code. Copy to barcode-config.json and fill with your own values (gitignored).",
+  "priority_source": "サンプルソース",
+  "series_to_sources": {
+    "S1": ["サンプルソース"],
+    "S2": ["サンプルソース"]
+  },
+  "fallback_prefixes": ["AA1", "BB1", "CC1"]
+}

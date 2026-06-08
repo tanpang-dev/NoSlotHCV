@@ -1,0 +1,6 @@
+{
+  "_comment": "FICTIONAL sample summon-card barcodes for battle mode. Real CODE39 values are NOT shipped. Copy to summon-cards.json and fill with your own (gitignored).",
+  "gu": "DD1SUMMONGU",
+  "choki": "DD1SUMMONCH",
+  "paa": "DD1SUMMONPA"
+}

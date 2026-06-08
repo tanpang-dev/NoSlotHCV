@@ -1,0 +1,79 @@
+{
+  "source": "FICTIONAL sample data for NoSlotHCV. Not real card data. Replace with your own dataset (see cards.schema.json).",
+  "scoped_for": "demo only",
+  "column_legend": {
+    "versions": {
+      "S1": "Sample series 1 (fictional)",
+      "S2": "Sample series 2 (fictional)"
+    }
+  },
+  "image_index": {
+    "sample-set": "Sample set (no image files shipped)"
+  },
+  "collector_medals": [
+    { "name": "S1", "version": "サンプル第1弾", "notes": "fictional" },
+    { "name": "S2", "version": "サンプル第2弾", "notes": "fictional" }
+  ],
+  "mushi_cards": [
+    {
+      "no": "S-001",
+      "name": "サンプルカブト",
+      "versions": { "S1": "〇" },
+      "images": ["sample-set/mushi-001.png"],
+      "barcodes": [
+        {
+          "template": "AA1SAMPLE001",
+          "source": "サンプルソース",
+          "battle_profiles": [
+            { "series": "S1", "battle": { "special_move_type": "gu", "special_move": "サンこう" } }
+          ],
+          "battle": { "special_move_type": "gu", "special_move": "サンこう" }
+        }
+      ]
+    },
+    {
+      "no": "S-002",
+      "name": "テストクワガタ",
+      "versions": { "S1": "〇", "S2": "〇" },
+      "images": ["sample-set/mushi-002.png"],
+      "barcodes": [
+        {
+          "template": "AA1SAMPLE002",
+          "source": "サンプルソース",
+          "battle_profiles": [
+            { "series": "S1", "battle": { "special_move_type": "choki", "special_move": "テスはさ" } }
+          ],
+          "battle": { "special_move_type": "choki", "special_move": "テスはさ" }
+        }
+      ]
+    }
+  ],
+  "waza_cards": [
+    {
+      "no": "W-001",
+      "name": "サンプルわざ・グー",
+      "versions": { "S1": "〇" },
+      "images": ["sample-set/waza-001.png"],
+      "barcodes": [{ "template": "BB1SAMPLE001", "source": "サンプルソース" }],
+      "battle": { "move_type": "gu" }
+    },
+    {
+      "no": "W-002",
+      "name": "サンプルわざ・チョキ",
+      "versions": { "S1": "〇" },
+      "images": ["sample-set/waza-002.png"],
+      "barcodes": [{ "template": "BB1SAMPLE002", "source": "サンプルソース" }],
+      "battle": { "move_type": "choki" }
+    }
+  ],
+  "ada_cards": [],
+  "license_cards": [
+    {
+      "no": "L-001",
+      "name": "サンプルライセンス",
+      "versions": { "S1": "〇" },
+      "images": ["sample-set/license-001.png"],
+      "barcodes": [{ "template": "CC1SAMPLE001", "source": "サンプルソース" }]
+    }
+  ]
+}

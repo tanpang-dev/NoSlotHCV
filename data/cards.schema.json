@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/tanpang-dev/NoSlotHCV/data/cards.schema.json",
+  "title": "NoSlotHCV card database",
+  "description": "Format for the card database the UI reads. SHIP THE FORMAT, NOT THE DATA: do not commit real card images, real CODE39 barcodes, or game stats. Users supply their own cards.json that follows this schema.",
+  "type": "object",
+  "required": ["mushi_cards"],
+  "properties": {
+    "source": { "type": "string", "description": "Free-form note about where this dataset came from (unofficial)." },
+    "scoped_for": { "type": "string", "description": "Which hardware/title this dataset targets." },
+    "column_legend": {
+      "type": "object",
+      "description": "Human-readable explanation of version/mark codes. Documentation only.",
+      "additionalProperties": true
+    },
+    "image_index": {
+      "type": "object",
+      "description": "Map of image directory name -> human label. Image files themselves are NOT shipped.",
+      "additionalProperties": { "type": "string" }
+    },
+    "collector_medals": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/medal" }
+    },
+    "mushi_cards":   { "type": "array", "items": { "$ref": "#/$defs/card" } },
+    "waza_cards":    { "type": "array", "items": { "$ref": "#/$defs/card" } },
+    "ada_cards":     { "type": "array", "items": { "$ref": "#/$defs/card" } },
+    "license_cards": { "type": "array", "items": { "$ref": "#/$defs/card" } }
+  },
+  "$defs": {
+    "medal": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": { "type": "string", "description": "Medal/version tag, also used as a key inside card.versions." },
+        "version": { "type": "string" },
+        "notes": { "type": "string" }
+      },
+      "additionalProperties": true
+    },
+    "card": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "no": { "type": "string", "description": "Card number / id label." },
+        "name": { "type": "string", "description": "Display name. Real-world species names are factual. Do NOT embed copyrighted full move names; use unofficial abbreviations." },
+        "versions": {
+          "type": "object",
+          "description": "Keyed by collector medal name. Presence means the card exists in that version.",
+          "additionalProperties": true
+        },
+        "images": {
+          "type": "array",
+          "description": "Relative image paths like 'set-dir/file.png'. Files are user-supplied and never committed; UI shows a placeholder when missing.",
+          "items": { "type": "string" }
+        },
+        "barcodes": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/barcode" }
+        },
+        "battle": { "$ref": "#/$defs/battle" }
+      },
+      "additionalProperties": true
+    },
+    "barcode": {
+      "type": "object",
+      "description": "A scan template for one source/series. Real CODE39 values are user-supplied and not committed.",
+      "properties": {
+        "template": { "type": "string", "description": "CODE39 template string (<=13 chars). Sample data uses fictional placeholders." },
+        "source": { "type": "string", "description": "Series/source label this barcode belongs to." },
+        "battle_profiles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "series": { "type": "string" },
+              "battle": { "$ref": "#/$defs/battle" }
+            },
+            "additionalProperties": true
+          }
+        },
+        "battle": { "$ref": "#/$defs/battle" }
+      },
+      "additionalProperties": true
+    },
+    "battle": {
+      "type": "object",
+      "description": "Optional battle metadata shown in the UI.",
+      "properties": {
+        "move_type": { "type": "string", "enum": ["gu", "choki", "paa"], "description": "Rock/scissors/paper class for waza cards." },
+        "special_move": { "type": "string", "description": "UNOFFICIAL abbreviated label only (e.g. 'ドラアタ'). Never the full copyrighted move name." },
+        "special_move_type": { "type": "string", "enum": ["gu", "choki", "paa"] }
+      },
+      "additionalProperties": true
+    }
+  }
+}
