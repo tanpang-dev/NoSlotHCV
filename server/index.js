@@ -84,7 +84,11 @@ function safeImagePath(urlPath) {
 
 /* ---- card feed handlers ---- */
 
-function handleCurrentCard(res) {
+function handleCurrentCard(req, res) {
+  if (process.env.NOSLOT_DEBUG) {
+    const ip = req.socket && req.socket.remoteAddress;
+    console.log(`[3ds] GET /current-card from ${ip} -> ${mushikingCard ? mushikingCard.code39 : '(none)'} seq=${mushikingCard ? mushikingCard.seq : mushikingSeq}`);
+  }
   const code39 = mushikingCard ? mushikingCard.code39 : '';
   res.writeHead(200, {
     'Content-Type': 'text/plain',
@@ -304,9 +308,17 @@ function serveStatic(req, res) {
 /* ---- HTTP routing ---- */
 
 const httpServer = http.createServer((req, res) => {
+  // Global CORS headers on every response. Besides letting a browser UI on a
+  // different origin talk to the server, the on-device WiFi blob's HTTP parser
+  // depends on these being present in the /mushiking/current-card response —
+  // without them the (shorter) response is not consumed and no card is fed.
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, X-Filename');
+
   const url = req.url.split('?')[0];
 
-  if (req.method === 'GET' && url === '/mushiking/current-card') return handleCurrentCard(res);
+  if (req.method === 'GET' && url === '/mushiking/current-card') return handleCurrentCard(req, res);
   if (req.method === 'POST' && url === '/mushiking/select-card') return handleSelectCard(req, res);
   if (req.method === 'POST' && url === '/mushiking/bake-key') return handleBakeKey(req, res);
 
@@ -362,6 +374,10 @@ function startDiscovery() {
     console.log(`Discovery: UDP :${DISCOVERY_PORT} (broadcast GBAWIIPC + reply 3DS_HERE)`);
   });
   beacon.on('message', (msg, rinfo) => {
+    if (process.env.NOSLOT_DEBUG) {
+      const head = msg.toString('ascii', 0, Math.min(8, msg.length)).replace(/[^\x20-\x7e]/g, '.');
+      console.log(`[discovery] udp ${msg.length}B from ${rinfo.address}:${rinfo.port} head="${head}"`);
+    }
     if (msg.length >= 8 && msg.toString('ascii', 0, 8) === '3DS_FIND') {
       beacon.send(Buffer.from('3DS_HERE'), 0, 8, rinfo.port, rinfo.address);
     }
